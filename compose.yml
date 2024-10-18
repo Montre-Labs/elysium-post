@@ -1,0 +1,16 @@
+services:
+  pg:
+    image: postgres:latest
+    volumes:
+      - ./database:/var/lib/postgresql
+    environment:
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=app
+    ports:
+      - 5432:5432
+    networks:
+      - fyoussef
+
+networks:
+  fyoussef:
+    external: true
