@@ -17,13 +17,10 @@ export class NodemailerAdapter {
     return transport;
   }
 
-  async send({ to, subject, text, html }: SendEmail) {
+  async send(input: SendEmail) {
     const info = await this.transport().sendMail({
       from: process.env.EMAIL_ADDRESS,
-      to,
-      subject,
-      text,
-      html,
+      ...input,
     });
     return info;
   }
