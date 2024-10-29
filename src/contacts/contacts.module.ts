@@ -7,9 +7,24 @@ import { ListContactsController } from './controllers/list-contacts.controller';
 import { ListContactsHandler } from './queries/handlers/list-contacts.handler';
 import { SendEmailByTopicController } from './controllers/send-email-by-topic.controller';
 import { SendEmailByTopicHandler } from './commands/handlers/send-email-by-topic.handler';
+import { BullModule } from '@nestjs/bullmq';
+import { NotificationsConsumer } from './queue/notifications-consumer';
 
 @Module({
-  imports: [AdaptersModule, CqrsModule],
+  imports: [
+    AdaptersModule,
+    CqrsModule,
+    BullModule.forRoot({
+      connection: {
+        host: 'localhost',
+        port: 6379,
+        password: 'root',
+      },
+    }),
+    BullModule.registerQueue({
+      name: 'notifications',
+    }),
+  ],
   controllers: [
     CreateContactController,
     ListContactsController,
@@ -19,6 +34,7 @@ import { SendEmailByTopicHandler } from './commands/handlers/send-email-by-topic
     CreateContactHandler,
     ListContactsHandler,
     SendEmailByTopicHandler,
+    NotificationsConsumer,
   ],
 })
 export class Contacts {}

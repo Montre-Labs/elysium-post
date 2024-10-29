@@ -11,6 +11,19 @@ services:
     networks:
       - fyoussef
 
+  redis:
+    image: redis:latest
+    restart: always
+    ports:
+      - 6379:6379
+    command: redis-server --save 20 1 --loglevel warning --requirepass root
+    environment:
+      - REDIS_PASSWORD=root
+    volumes: 
+      - ./redis:/data
+    networks:
+      - fyoussef
+
 networks:
   fyoussef:
     external: true
